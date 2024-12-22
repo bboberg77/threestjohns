@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check PDF Existence</title>
+    <script>
+        function checkPDF() {
+            const pdfUrl = 'TestPDFdocument.pdf';
+            fetch(pdfUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('pdfLink').style.display = 'block';
+                    } else {
+                        document.getElementById('pdfLink').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking PDF:', error);
+                    document.getElementById('pdfLink').style.display = 'none';
+                });
+        }
+
+        window.onload = checkPDF;
+    </script>
+</head>
+<body>
+    <a id="pdfLink" href="TestPDFdocument.pdf" style="display: none;">Download PDF</a>
+</body>
+</html>
