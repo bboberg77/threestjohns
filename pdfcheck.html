@@ -3,28 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check PDF Existence</title>
-    <script>
-        function checkPDF() {
-            const pdfUrl = 'TestPDFdocument.pdf';
-            fetch(pdfUrl, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        document.getElementById('pdfLink').style.display = 'block';
-                    } else {
-                        document.getElementById('pdfLink').style.display = 'none';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error checking PDF:', error);
-                    document.getElementById('pdfLink').style.display = 'none';
-                });
-        }
-
-        window.onload = checkPDF;
-    </script>
+    <title>PDF Link Example</title>
 </head>
 <body>
-    <a id="pdfLink" href="TestPDFdocument.pdf" style="display: none;">Download PDF</a>
+    <div id="pdfLinkContainer1"></div>
+    <div id="pdfLinkContainer2"></div>
+    <div id="pdfLinkContainer3"></div>
+
+    <script>
+        // Paths to the PDF files
+        const pdfPaths = ['./bulletins/wgcbulletindecember22-24.pdf', './bulletins/wgcbulletindecember22-24-2.pdf', './bulletins/wgcbulletindecember22-24-3.pdf'];
+
+        pdfPaths.forEach((pdfPath, index) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('HEAD', pdfPath, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    const linkContainer = document.getElementById('pdfLinkContainer' + (index + 1));
+                    if (xhr.status === 200) {
+                        const link = document.createElement('a');
+                        link.href = pdfPath;
+                        if (index == 0) {
+                            link.textContent = `Download the current church bulletin PDF`;
+                        }
+                        if (index == 1) {
+                            link.textContent = `Download the most recent church bulletin PDF`;
+                        }
+                        if (index == 2) {
+                            link.textContent = `Download a recent church bulletin PDF`;
+                        }
+                        //link.textContent = `Download PDF ${index + 1}`;
+                        linkContainer.appendChild(link);
+                    } else {
+                        linkContainer.textContent = `Church bulletin PDF ${index + 1} not found`;
+                    }
+                }
+            };
+            xhr.send();
+        });
+    </script>
 </body>
 </html>
